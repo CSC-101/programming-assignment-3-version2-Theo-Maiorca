@@ -1,6 +1,7 @@
 import data
 import build_data
 import unittest
+import hw3
 
 
 # These two values are defined to support testing below. The
@@ -180,6 +181,10 @@ class TestCases(unittest.TestCase):
 
     # Part 1
     # test population_total
+    total_population = population_total(reduced_data)
+    expected_population = 55395 + 61697
+    print("Calculated Total Population:", total_population)
+    print("Expected Total Population:", expected_population)
 
     # Part 2
     # test filter_by_state
