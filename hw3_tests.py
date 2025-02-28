@@ -1,6 +1,7 @@
 import data
 import build_data
 import unittest
+import hw3.py
 
 
 # These two values are defined to support testing below. The
@@ -180,27 +181,190 @@ class TestCases(unittest.TestCase):
 
     # Part 1
     # test population_total
+    total_population = population_total(reduced_data)
+    expected_population = 55395 + 61697
+    print("Calculated Total Population:", total_population)
+    print("Expected Total Population:", expected_population)
+
+    if total_population == expected_population:
+        print("Test Passed!")
+    else:
+        print("Test Failed!")
 
     # Part 2
-    # test filter_by_state
+    # Test 1: Filter counties by state 'CA'
+    result = filter_by_state(reduced_data, 'CA')
+
+    # Expected counties from 'CA' state
+    expected_counties = [
+        'San Luis Obispo County',
+        'Yolo County',
+        'Butte County'
+    ]
+
+    # Extract county names from the result
+    result_names = [county.county for county in result]
+
+    # Assert the result is as expected
+    assert result_names == expected_counties, f"Expected {expected_counties}, but got {result_names}"
+
+    # Running the test
+    test_filter_by_state()
 
     # Part 3
     # test population_by_education
+    # Test for 'Bachelor's Degree or Higher' education level
+    result = population_by_education(reduced_data, "Bachelor's Degree or Higher")
+    expected_result = 87911.145  # From the example, it should return this value
+
+    assert abs(result - expected_result) < 1e-2, f"Expected {expected_result}, but got {result}"
+
     # test population_by_ethnicity
+    # Test for 'Two or More Races' ethnicity
+    result = population_by_ethnicity(reduced_data, 'Two or More Races')
+    expected_result = 3671.18  # From the example or expected calculation
+
+    assert abs(result - expected_result) < 1e-2, f"Expected {expected_result}, but got {result}"
     # test population_below_poverty_level
+    # Test for total population below the poverty level
+    result = population_below_poverty_level(reduced_data)
+    expected_result = 11193399.18  # From the example or expected calculation
+
+    assert abs(result - expected_result) < 1e-2, f"Expected {expected_result}, but got {result}"
 
     # Part 4
     # test percent_by_education
+    # Test for 'Bachelor's Degree or Higher' education level
+    result = percent_by_education(reduced_data, "Bachelor's Degree or Higher")
+    expected_result = 0.2759  # Example value
+
+    assert abs(result - expected_result) < 1e-2, f"Expected {expected_result}, but got {result}"
     # test percent_by_ethnicity
+    # Test for 'Two or More Races' ethnicity
+    result = percent_by_ethnicity(reduced_data, 'Two or More Races')
+    expected_result = 0.0011  # Example value
+
+    assert abs(result - expected_result) < 1e-2, f"Expected {expected_result}, but got {result}"
     # test percent_below_poverty_level
+    # Test for total population below the poverty level as percentage
+    result = percent_below_poverty_level(reduced_data)
+    expected_result = 3.51  # Example value
+
+    assert abs(result - expected_result) < 1e-2, f"Expected {expected_result}, but got {result}"
 
     # Part 5
     # test education_greater_than
+    def test_education_greater_than():
+        county_data = [
+            {'County': 'County1', "Bachelor's Degree or Higher": 45.2, 'Hispanic or Latino': 25.5,
+             'Persons Below Poverty Level': 15.1},
+            {'County': 'County2', "Bachelor's Degree or Higher": 60.3, 'Hispanic or Latino': 10.1,
+             'Persons Below Poverty Level': 8.9},
+            {'County': 'County3', "Bachelor's Degree or Higher": 35.0, 'Hispanic or Latino': 30.4,
+             'Persons Below Poverty Level': 20.5},
+        ]
+
+        result = education_greater_than(county_data, "Bachelor's Degree or Higher", 50)
+        expected_result = [{'County': 'County2', "Bachelor's Degree or Higher": 60.3, 'Hispanic or Latino': 10.1,
+                            'Persons Below Poverty Level': 8.9}]
+
+        assert result == expected_result, f"Expected {expected_result}, but got {result}"
+
     # test education_less_than
+    def test_education_less_than():
+        county_data = [
+            {'County': 'County1', "Bachelor's Degree or Higher": 45.2, 'Hispanic or Latino': 25.5,
+             'Persons Below Poverty Level': 15.1},
+            {'County': 'County2', "Bachelor's Degree or Higher": 60.3, 'Hispanic or Latino': 10.1,
+             'Persons Below Poverty Level': 8.9},
+            {'County': 'County3', "Bachelor's Degree or Higher": 35.0, 'Hispanic or Latino': 30.4,
+             'Persons Below Poverty Level': 20.5},
+        ]
+
+        result = education_less_than(county_data, "Bachelor's Degree or Higher", 50)
+        expected_result = [
+            {'County': 'County1', "Bachelor's Degree or Higher": 45.2, 'Hispanic or Latino': 25.5,
+             'Persons Below Poverty Level': 15.1},
+            {'County': 'County3', "Bachelor's Degree or Higher": 35.0, 'Hispanic or Latino': 30.4,
+             'Persons Below Poverty Level': 20.5}
+        ]
+
+        assert result == expected_result, f"Expected {expected_result}, but got {result}"
+
     # test ethnicity_greater_than
+    def test_ethnicity_greater_than():
+        county_data = [
+            {'County': 'County1', 'Bachelor\'s Degree or Higher': 45.2, 'Hispanic or Latino': 25.5,
+             'Persons Below Poverty Level': 15.1},
+            {'County': 'County2', 'Bachelor\'s Degree or Higher': 60.3, 'Hispanic or Latino': 10.1,
+             'Persons Below Poverty Level': 8.9},
+            {'County': 'County3', 'Bachelor\'s Degree or Higher': 35.0, 'Hispanic or Latino': 30.4,
+             'Persons Below Poverty Level': 20.5},
+        ]
+
+        result = ethnicity_greater_than(county_data, 'Hispanic or Latino', 20)
+        expected_result = [{'County': 'County3', 'Bachelor\'s Degree or Higher': 35.0, 'Hispanic or Latino': 30.4,
+                            'Persons Below Poverty Level': 20.5}]
+
+        assert result == expected_result, f"Expected {expected_result}, but got {result}"
+
+
     # test ethnicity_less_than
+    def test_ethnicity_less_than():
+        county_data = [
+            {'County': 'County1', 'Bachelor\'s Degree or Higher': 45.2, 'Hispanic or Latino': 25.5,
+             'Persons Below Poverty Level': 15.1},
+            {'County': 'County2', 'Bachelor\'s Degree or Higher': 60.3, 'Hispanic or Latino': 10.1,
+             'Persons Below Poverty Level': 8.9},
+            {'County': 'County3', 'Bachelor\'s Degree or Higher': 35.0, 'Hispanic or Latino': 30.4,
+             'Persons Below Poverty Level': 20.5},
+        ]
+
+        result = ethnicity_less_than(county_data, 'Hispanic or Latino', 20)
+        expected_result = [{'County': 'County2', 'Bachelor\'s Degree or Higher': 60.3, 'Hispanic or Latino': 10.1,
+                            'Persons Below Poverty Level': 8.9}]
+
+        assert result == expected_result, f"Expected {expected_result}, but got {result}"
+
+
     # test below_poverty_level_greater_than
+    def test_below_poverty_level_greater_than():
+        county_data = [
+            {'County': 'County1', 'Bachelor\'s Degree or Higher': 45.2, 'Hispanic or Latino': 25.5,
+             'Persons Below Poverty Level': 15.1},
+            {'County': 'County2', 'Bachelor\'s Degree or Higher': 60.3, 'Hispanic or Latino': 10.1,
+             'Persons Below Poverty Level': 8.9},
+            {'County': 'County3', 'Bachelor\'s Degree or Higher': 35.0, 'Hispanic or Latino': 30.4,
+             'Persons Below Poverty Level': 20.5},
+        ]
+
+        result = below_poverty_level_greater_than(county_data, 10)
+        expected_result = [
+            {'County': 'County1', 'Bachelor\'s Degree or Higher': 45.2, 'Hispanic or Latino': 25.5,
+             'Persons Below Poverty Level': 15.1},
+            {'County': 'County3', 'Bachelor\'s Degree or Higher': 35.0, 'Hispanic or Latino': 30.4,
+             'Persons Below Poverty Level': 20.5}
+        ]
+
+        assert result == expected_result, f"Expected {expected_result}, but got {result}"
+
     # test below_poverty_level_less_than
+    def test_below_poverty_level_less_than():
+        county_data = [
+            {'County': 'County1', 'Bachelor\'s Degree or Higher': 45.2, 'Hispanic or Latino': 25.5,
+             'Persons Below Poverty Level': 15.1},
+            {'County': 'County2', 'Bachelor\'s Degree or Higher': 60.3, 'Hispanic or Latino': 10.1,
+             'Persons Below Poverty Level': 8.9},
+            {'County': 'County3', 'Bachelor\'s Degree or Higher': 35.0, 'Hispanic or Latino': 30.4,
+             'Persons Below Poverty Level': 20.5},
+        ]
+
+        result = below_poverty_level_less_than(county_data, 15)
+        expected_result = [{'County': 'County2', 'Bachelor\'s Degree or Higher': 60.3, 'Hispanic or Latino': 10.1,
+                            'Persons Below Poverty Level': 8.9}]
+
+        assert result == expected_result, f"Expected {expected_result}, but got {result}"
+
 
 
 
